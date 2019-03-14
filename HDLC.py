@@ -40,7 +40,7 @@ class HDLC:
         result = None
         
         if not pll:
-            if self.frame.tell() > 17 and self.passall:
+            if self.frame.tell() > 14 and self.passall:
                 result = (self.crc(), self.frame.getvalue())
                 # print "lost lock"
             self.reset()
@@ -151,7 +151,7 @@ class HDLC:
                 self.consume_byte()
 
             if self._have_flag():
-                if self.frame.tell() > 17:
+                if self.frame.tell() > 14:
                     # result = self.check_frame()
                     result = (self.crc(), self.frame.getvalue()[:-2])
                 self.start_frame()
@@ -162,7 +162,7 @@ class HDLC:
                 self.ones = 0
             else:
                 # print "frame error"
-                if self.passall and self.frame.tell() > 17:
+                if self.passall and self.frame.tell() > 14:
                     result = (self.crc(), self.frame.getvalue())
                 # Framing error
                 if ((self.buffer >> (16 - self.bits)) & 0xFF) == 0x7E:
